@@ -10,23 +10,22 @@ java {
     }
 }
 
-// Testcontainers 1.21.4+ speaks the Docker API version that Docker Engine 29 requires.
-extra["testcontainers.version"] = "1.21.4"
-
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-webmvc")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
-    implementation("org.flywaydb:flyway-core")
+    implementation("org.springframework.boot:spring-boot-starter-flyway")
     implementation("org.flywaydb:flyway-database-postgresql")
     runtimeOnly("org.postgresql:postgresql")
     runtimeOnly("io.micrometer:micrometer-registry-prometheus")
 
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
+    testImplementation("org.springframework.boot:spring-boot-starter-restclient")
+    testImplementation("org.springframework.boot:spring-boot-resttestclient")
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
-    testImplementation("org.testcontainers:junit-jupiter")
-    testImplementation("org.testcontainers:postgresql")
+    testImplementation("org.testcontainers:testcontainers-junit-jupiter")
+    testImplementation("org.testcontainers:testcontainers-postgresql")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
