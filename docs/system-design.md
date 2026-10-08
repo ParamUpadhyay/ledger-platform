@@ -6,9 +6,9 @@ Ledger moves money between accounts and keeps a double-entry record of every mov
 
 | Service | Owns | Talks to |
 | --- | --- | --- |
-| account-service | Accounts and balances (Postgres) | Publishes `account.opened` |
-| transfer-service | Transfers and ledger entries (Postgres) | Calls account-service, publishes `transfer.created` via an outbox |
-| fraud-service | Fraud rules and decisions | Consumes `transfer.created`, publishes `transfer.flagged` |
+| account-service | Account identity, owner and currency (Postgres) | Publishes `account.opened` |
+| transfer-service | Transfers, ledger entries and balances (Postgres), see [ADR 0002](adr/0002-ledger-owns-balances.md) | Calls account-service, publishes `transfer.completed` via an outbox |
+| fraud-service | Fraud rules and decisions | Consumes `transfer.completed`, publishes `transfer.flagged` |
 | notification-service | Delivery attempts | Consumes transfer events, retries with a dead-letter topic |
 
 ## Rules that hold everywhere
@@ -23,7 +23,8 @@ Ledger moves money between accounts and keeps a double-entry record of every mov
 ## Status
 
 - [x] account-service: open and fetch accounts
-- [ ] transfer-service
+- [x] transfer-service: deposits, transfers, balances, outbox rows
+- [ ] Outbox relay to Kafka
 - [ ] fraud-service
 - [ ] notification-service
 - [ ] API gateway and Keycloak auth
